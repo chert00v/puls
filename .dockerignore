@@ -1,0 +1,10 @@
+node_modules
+.venv
+.git
+*.db
+*.db-wal
+*.db-shm
+.env
+frontend/dist
+__pycache__
+*.tar.gz
