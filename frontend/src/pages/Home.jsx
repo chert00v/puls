@@ -8,7 +8,12 @@ export default function Home() {
   const nav = useNavigate()
   const [topic, setTopic] = useState('')
   const [qs, setQs] = useState(null)
-  const [count, setCount] = useState(5)
+const [count, setCount] = useState('5')
+const fixCount = () => {
+  const n = Math.max(3, Math.min(15, parseInt(count, 10) || 3))
+  setCount(String(n))
+  return n
+}
   const [busy, setBusy] = useState('')
   const [err, setErr] = useState('')
 
@@ -19,7 +24,7 @@ export default function Home() {
     setBusy('')
   }
   const open = async (body) => {
-    const s = await createSession(body)
+   const gen = () => run('gen', async () => setQs((await generateQuestions(topic.trim(), fixCount())).questions))
     sessionStorage.setItem(`teacherKey:${s.session_id}`, s.teacher_key)
     sessionStorage.setItem(`code:${s.session_id}`, s.code)
     nav(`/teacher/${s.session_id}`)
@@ -37,10 +42,11 @@ export default function Home() {
     <main className="mx-auto max-w-2xl p-6">
       <h1 className="mt-10 text-center text-3xl font-bold">Пульс класса</h1>
       <p className="mt-3 text-center text-slate-600">Короткий анонимный тест → типичная ошибка → объяснение → повторная проверка.</p>
-
-      <label className="mt-8 block font-semibold">Тема урока
-        <input className={`${inp} mt-1 text-lg`} placeholder="Например: Дроби, Причастный оборот, Закон Ома" value={topic} maxLength={100}
-          onChange={(e) => { setTopic(e.target.value); setQs(null) }} />
+      <label className="mt-3 block text-sm text-slate-600">Сколько вопросов (3–15)
+        <input type="text" inputMode="numeric" pattern="[0-9]*" maxLength={2}
+          className="ml-2 w-20 rounded border border-slate-300 px-2 py-1" value={count}
+          onChange={(e) => setCount(e.target.value.replace(/\D/g, ''))}
+          onBlur={fixCount} />
       </label>
       <label className="mt-3 block text-sm text-slate-600">Сколько вопросов (3–15)
         <input type="number" min="3" max="15" className="ml-2 w-20 rounded border border-slate-300 px-2 py-1" value={count}
