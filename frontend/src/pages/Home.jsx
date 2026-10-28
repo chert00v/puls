@@ -48,10 +48,7 @@ const fixCount = () => {
           onChange={(e) => setCount(e.target.value.replace(/\D/g, ''))}
           onBlur={fixCount} />
       </label>
-      <label className="mt-3 block text-sm text-slate-600">Сколько вопросов (3–15)
-        <input type="number" min="3" max="15" className="ml-2 w-20 rounded border border-slate-300 px-2 py-1" value={count}
-          onChange={(e) => setCount(Math.max(3, Math.min(15, Number(e.target.value) || 3)))} />
-      </label>
+
       <button onClick={gen} disabled={topic.trim().length < 3 || !!busy}
         className="mt-3 rounded-xl bg-indigo-600 px-5 py-3 font-semibold text-white disabled:opacity-40">
         {busy === 'gen' ? 'ИИ составляет вопросы…' : qs ? 'Составить заново' : 'Составить вопросы с помощью ИИ'}
