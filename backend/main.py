@@ -232,8 +232,10 @@ DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"
 if DIST.exists():
     app.mount("/assets", StaticFiles(directory=DIST / "assets"), name="assets")
 
+    NO_CACHE = {"Cache-Control": "no-cache, no-store, must-revalidate"}
+
     @app.get("/{path:path}")
     async def spa(path: str):
         f = (DIST / path).resolve()
         ok = path and f.is_file() and f.is_relative_to(DIST.resolve())
-        return FileResponse(f if ok else DIST / "index.html")
+        return FileResponse(f if ok else DIST / "index.html", headers=NO_CACHE)
