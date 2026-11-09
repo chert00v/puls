@@ -12,6 +12,7 @@ $env:LLM_BASE_URL = "https://api.openai.com/v1"
 $env:LLM_API_KEY  = "ключ"
 $env:LLM_MODEL    = "gpt-4o-mini"
 uvicorn backend.main:app --host 0.0.0.0 --port 8000
+подойдет любое ии принципе
 ```
 Второе окно (режим разработки):
 ```powershell
